@@ -1,0 +1,16 @@
+# Experiment 4 - Augmented Superiority Regression under Held-Out Transformation Families.
+# Read by ./run_experiment4.py.
+
+id: experiment4
+preset: full
+
+# BBOB on both sides of the split.
+problem_classes: [bbob]
+
+overrides:
+  - paths.run_name=experiment4
+  # The training block is instances 11-110.
+  - preset.max_instances=110
+  # The same tuning instance as Experiments 1 and 2, whose superiorities the
+  # `plain` condition regresses. Instance 1 lies in the test block.
+  - task.tuning_instance_ids=[11]

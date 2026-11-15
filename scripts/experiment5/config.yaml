@@ -1,0 +1,15 @@
+# Experiment 5 - Selection under a Transformation Family the Training Never Saw.
+# Read by ./run_experiment5.py.
+
+id: experiment5
+preset: full
+
+# BBOB only.
+problem_classes: [bbob]
+
+overrides:
+  - paths.run_name=experiment5
+  # The training block is instances 11-110.
+  - preset.max_instances=110
+  # The same tuning instance as Experiment 3, whose quantity the `plain` column is.
+  - task.tuning_instance_ids=[11]

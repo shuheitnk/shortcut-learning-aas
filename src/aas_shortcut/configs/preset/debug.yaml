@@ -1,0 +1,15 @@
+# @package preset
+# Not a research scale: the smallest one that runs end to end, for CI and debugging.
+defaults:
+  - preset_schema
+
+name: debug
+dim: 2
+# dim * sampling_factor must clear MIN_ELA_SAMPLE_SIZE (100).
+sampling_factor: 50
+# fe_budget_factor * dim must clear minimum_fe_budget(dim).
+fe_budget_factor: 100
+num_feature_reps: 1
+num_trials: 3
+max_functions: 3
+max_instances: 2

@@ -1,0 +1,195 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "shortcut-learning-aas"
+version = "0.1.0"
+description = "Experiment code for the paper \"Shortcut Learning in Feature-Based Algorithm Selection\"."
+readme = "README.md"
+requires-python = "==3.11.*"
+license = { file = "LICENSE" }
+keywords = [
+    "exploratory landscape analysis",
+    "black-box optimization",
+    "algorithm selection",
+    "benchmarking",
+    "BBOB",
+    "reproducibility",
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.11",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+    "Topic :: Scientific/Engineering :: Mathematics",
+]
+
+authors = [
+    { name = "Shuhei Tanaka", email = "32556009@fukuchiyama.ac.jp" },
+    { name = "Shoichiro Tanaka", email = "tanaka-shoichiro@fukuchiyama.ac.jp" },
+    { name = "Toshiharu Hatanaka", email = "hatanakatoshiharu@fukuchiyama.ac.jp" },
+]
+# Direct dependencies; uv.lock pins the rest. The scientific stack is pinned
+# exactly because the features and optimizer trajectories depend on it. numpy
+# stays below 2, which is the reason for several upper bounds below.
+dependencies = [
+    "hydra-core>=1.3.2",
+    "ioh==0.3.17",
+    "joblib==1.5.3",
+    "matplotlib==3.10.9",
+    "modcma==1.2.0",
+    "modde==0.0.4",
+    # Powell's BOBYQA, in C. 2.8 and later require numpy>=2.
+    "nlopt==2.7.1",
+    # Above the numpy~=1.24.3 that pflacco declares: see [tool.uv] below.
+    "numpy==1.26.4",
+    "omegaconf>=2.3.0",
+    "pandas==2.0.3",
+    "pflacco @ git+https://github.com/Reiyan/pflacco.git@4689566adcd20b86b4064d891d5e4e37c6e2ceca",
+    # Parquet backend for pandas, used by name rather than imported. 16 requires
+    # numpy>=2.
+    "pyarrow>=12,<16",
+    # RealMLP-TD, the main learner. It requires numpy>=1.25 and scikit-learn>=1.3.
+    "pytabkit==1.7.3",
+    # Above the scikit-learn~=1.2.2 that pflacco declares: see [tool.uv] below.
+    "scikit-learn==1.3.2",
+    "scipy==1.10.1",
+    # The Deep-ELA runtime (torch 2.6+ wheels need numpy>=2). The package and
+    # weights are vendored by scripts/install_deep_ela.py, not installed: the
+    # upstream installer republishes itself as `pflacco` and would replace the
+    # pinned commit. `einops` is imported by the vendored package.
+    "einops>=0.7",
+    "lightning>=2.0,<2.6",
+    "torch>=2.2,<2.6",
+    # An appendix learner. 3.x wheels require numpy>=2.
+    "xgboost>=2.0,<3",
+]
+
+[project.urls]
+Repository = "https://github.com/shuheitnk/shortcut-learning-aas"
+Issues = "https://github.com/shuheitnk/shortcut-learning-aas/issues"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/aas_shortcut"]
+
+[tool.hatch.metadata]
+allow-direct-references = true
+
+[tool.uv]
+# pflacco declares numpy~=1.24.3 and scikit-learn~=1.2.2, which pytabkit cannot
+# take; these replace that declaration.
+override-dependencies = ["numpy==1.26.4", "scikit-learn==1.3.2"]
+
+[dependency-groups]
+dev = [
+    "pyright>=1.1.411",
+    "pytest>=9.1.1",
+    "ruff>=0.16.1",
+]
+
+[tool.ruff]
+line-length = 88
+target-version = "py311"
+extend-exclude = ["outputs", "logs", "vendor"]
+
+[tool.ruff.lint]
+select = [
+    "E",    # pycodestyle errors
+    "W",    # pycodestyle warnings
+    "F",    # pyflakes
+    "I",    # import sorting
+    "B",    # flake8-bugbear
+    "C4",   # flake8-comprehensions
+    "UP",   # pyupgrade
+    "SIM",  # flake8-simplify
+    "PTH",  # prefer pathlib over os.path
+    "RUF",  # ruff-specific rules
+    "ARG",  # unused arguments
+    "PD",   # pandas-vet
+    "NPY",  # numpy-specific rules
+    "D",    # pydocstyle
+]
+ignore = [
+    "D100",    # module docstrings are not required for every module
+    "D104",    # package docstrings are covered by __init__ summaries
+    "D107",    # __init__ is documented on the class docstring
+    "D203",    # incompatible with D211
+    "D213",    # incompatible with D212
+    # modcma, modde and pflacco draw from NumPy's legacy global RNG; seeding a
+    # Generator instead would leave them unseeded.
+    "NPY002",
+    # Greek letters are mathematical notation here.
+    "RUF002",
+    "RUF003",
+]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/*" = [
+    "D101",    # test classes are grouping devices, not API
+    "D102",
+    "D103",
+    "ARG001",  # fixtures are requested for their side effects
+    "ARG002",
+    "ARG005",  # stub lambdas must match the signature they replace
+    "B018",    # attribute access under pytest.raises is the assertion
+    "PD101",   # nunique() is the clearest way to say "not constant"
+]
+# The checker quotes the documents' own text, `−` and `×` included.
+"scripts/check_document_numbers.py" = ["RUF001"]
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = [
+    "--strict-markers",
+    "--strict-config",
+    "-ra",
+]
+markers = [
+    "slow: end-to-end pipeline tests that run real optimizers (deselect with '-m \"not slow\"')",
+]
+filterwarnings = [
+    "error::DeprecationWarning:aas_shortcut.*",
+    "error::FutureWarning:aas_shortcut.*",
+]
+
+[tool.pyright]
+# The project's own code only; vendor/ is upstream Deep-ELA, left unmodified.
+include = ["src", "tests", "scripts"]
+exclude = ["vendor", "outputs", ".venv", "**/__pycache__", "**/node_modules"]
+# Tests import the entry points under scripts/ by path, so pyright needs those
+# directories on its search path.
+extraPaths = [
+    "scripts",
+    "scripts/preanalysis",
+    "scripts/experiment1",
+    "scripts/experiment2",
+    "scripts/experiment3",
+    "scripts/experiment5",
+    "scripts/experiment4",
+]
+pythonVersion = "3.11"
+typeCheckingMode = "standard"
+
+# pandas widens column access to unions that local annotations cannot narrow,
+# and matplotlib and the ioh/modde/modcma bindings are partly typed. These rules
+# stay visible as warnings rather than being silenced. A wrong argument type stays
+# an error; where pandas widens a value, the code narrows it with `typing.cast`.
+reportAttributeAccessIssue = "warning"
+reportArgumentType = "error"
+reportCallIssue = "warning"
+reportIndexIssue = "warning"
+reportOptionalSubscript = "warning"
+reportOptionalMemberAccess = "warning"
+reportOptionalIterable = "warning"
+reportReturnType = "warning"
+reportGeneralTypeIssues = "warning"
+reportOperatorIssue = "warning"
+reportPrivateImportUsage = "warning"
+

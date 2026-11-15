@@ -1,0 +1,27 @@
+# @package task
+# The settings every entry point composes its run from. Override after the entry
+# point's options, e.g. `task.n_jobs=8` or `task.feature_sets=[ela]`.
+defaults:
+  - pipeline_schema
+
+name: pipeline
+problem_classes: [bbob]
+# -1 is every core. Results do not depend on it: each unit of work is seeded
+# from its own coordinates.
+n_jobs: -1
+save_every: 25
+check_invariance: true
+feature_variants: [value, rank, concat]
+# `deep-ela` needs the vendored weights: `just vendor-deep-ela`.
+feature_sets: [ela, deep-ela]
+deep_ela_model: large_50d_v1
+deep_ela_repetitions: 10
+include_best_sampled_point: true
+# The selection's regressor, RealMLP-TD from pytabkit. The learners' settings
+# live in aas_shortcut.build_regression_model.
+model:
+  kind: realmlp
+# The regression's backend. `--learner` on an entry point sets both this and
+# task.model.kind.
+model_selection:
+  candidates: [realmlp]

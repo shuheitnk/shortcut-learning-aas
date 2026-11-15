@@ -1,0 +1,13 @@
+# Appendix - plain-4800, the plain training condition at the augmented size. Read by ./run_appendix_doubled.py.
+# Everything is resolved from the stage store as in Experiments 1, 4 and 5.
+
+id: appendix_doubled
+preset: full
+
+problem_classes: [bbob]
+
+overrides:
+  - paths.run_name=appendix_doubled
+  # Experiments 4 and 5's grid and tuning instance, so their units are the ones read.
+  - preset.max_instances=110
+  - task.tuning_instance_ids=[11]

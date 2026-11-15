@@ -1,0 +1,26 @@
+# Environment
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+*.egg-info/
+build/
+dist/
+
+# Deep-ELA and its weights, fetched by scripts/install_deep_ela.py.
+vendor/
+
+# Tool caches
+.pytest_cache/
+.ruff_cache/
+
+# Experiment artifacts; every result is regenerated from the code and lock file.
+outputs/
+
+# Editors and operating systems
+.vscode/
+.idea/
+*.swp
+.DS_Store
+Thumbs.db
+desktop.ini

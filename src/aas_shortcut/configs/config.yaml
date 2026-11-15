@@ -1,0 +1,21 @@
+# Root configuration, composed by every entry point with the preset it names.
+# Validated against aas_shortcut/define_config_schema.py, so an unknown override
+# fails rather than silently doing nothing.
+defaults:
+  - root_schema
+  - preset: debug
+  - task: pipeline
+  - _self_
+
+paths:
+  # The run root is <output_root>/<run_name>.
+  output_root: outputs
+  run_name: ${preset.name}
+
+# Base seed. Every other seed is hashed from it and the unit of work's coordinates
+# (suite, function, instance, dimension, repetition or trial, algorithm) in
+# aas_shortcut/derive_seeds.py.
+seed: 42
+
+# Keep at 1 for bit-identical results; multi-threaded BLAS reorders reductions.
+num_threads: 1

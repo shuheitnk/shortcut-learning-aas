@@ -1,0 +1,13 @@
+# Appendix - LOFO against the Rubber Ruler Test. Read by ./run_appendix_lofo.py.
+# Everything but the LOFO cells is resolved from the stage store as in Experiment 4.
+
+id: appendix_lofo
+preset: full
+
+problem_classes: [bbob]
+
+overrides:
+  - paths.run_name=appendix_lofo
+  # Experiment 4's grid and tuning instance, so its units are the ones read here.
+  - preset.max_instances=110
+  - task.tuning_instance_ids=[11]

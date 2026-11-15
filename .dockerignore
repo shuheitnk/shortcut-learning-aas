@@ -1,0 +1,4 @@
+# The image needs only the two manifests; the working tree is mounted at run time.
+*
+!pyproject.toml
+!uv.lock

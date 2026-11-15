@@ -1,0 +1,18 @@
+# Experiment 1 - Shortcut Learning under an Invariant Target.
+# Read by ./run_experiment1.py.
+
+id: experiment1
+preset: full
+
+# BBOB on both sides of the split.
+problem_classes: [bbob]
+
+overrides:
+  - paths.run_name=experiment1
+  # The training block is instances 11-110.
+  - preset.max_instances=110
+  # The same tuning instance as Experiments 2 and 4, so the target is the one
+  # Experiment 4's cell was fitted on.
+  - task.tuning_instance_ids=[11]
+  # ELA only: Deep-ELA has no structurally invariant coordinate, so the
+  # `invariant` set would be empty.

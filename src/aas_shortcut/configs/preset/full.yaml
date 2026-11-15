@@ -1,0 +1,14 @@
+# @package preset
+# The scale the paper reports. Experiments that fit on the training block raise
+# `max_instances` to 110 in their config.yaml.
+defaults:
+  - preset_schema
+
+name: full
+dim: 10
+sampling_factor: 50
+fe_budget_factor: 1000
+num_feature_reps: 1
+num_trials: 31
+max_functions: 24
+max_instances: 10

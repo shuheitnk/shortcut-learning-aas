@@ -1,0 +1,46 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite the paper below."
+title: "Shortcut Learning in Feature-Based Algorithm Selection: Experiment Code"
+abstract: >-
+  Experiment code for a study of shortcut learning in automated algorithm
+  selection: a selector trained on landscape features that read the objective's
+  magnitudes can rely on them even when the optimizers it chooses between are
+  unchanged by a strictly increasing transformation of the objective.
+type: software
+version: 0.1.0
+license: MIT
+repository-code: "https://github.com/shuheitnk/shortcut-learning-aas"
+authors:
+  - family-names: Tanaka
+    given-names: Shuhei
+    affiliation: "The University of Fukuchiyama"
+    orcid: "https://orcid.org/0009-0006-3807-4437"
+  - family-names: Tanaka
+    given-names: Shoichiro
+    affiliation: "The University of Fukuchiyama"
+    orcid: "https://orcid.org/0009-0002-9230-445X"
+  - family-names: Hatanaka
+    given-names: Toshiharu
+    affiliation: "The University of Fukuchiyama"
+    orcid: "https://orcid.org/0000-0003-3670-6825"
+keywords:
+  - shortcut learning
+  - exploratory landscape analysis
+  - black-box optimization
+  - algorithm selection
+  - benchmarking
+  - reproducibility
+preferred-citation:
+  type: article
+  title: "Shortcut Learning in Feature-Based Algorithm Selection"
+  authors:
+    - family-names: Tanaka
+      given-names: Shuhei
+    - family-names: Tanaka
+      given-names: Shoichiro
+    - family-names: Hatanaka
+      given-names: Toshiharu
+  year: 2026
+  # After arXiv posting, add:
+  # doi: "10.48550/arXiv.XXXX.XXXXX"
+  # url: "https://arxiv.org/abs/XXXX.XXXXX"

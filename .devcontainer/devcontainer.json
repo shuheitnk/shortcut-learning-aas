@@ -1,0 +1,76 @@
+// The development environment, built from ../Dockerfile (the only container
+// definition). Determinism and uv settings live there, so `docker run` behaves
+// the same as a VS Code terminal.
+{
+  "name": "shortcut-learning-aas",
+
+  // linux/amd64 because nlopt 2.7.1 (BOBYQA) has no aarch64 wheel or sdist and
+  // cannot be upgraded while numpy stays below 2. An ARM host runs it emulated.
+  "build": {
+    "dockerfile": "../Dockerfile",
+    "context": "..",
+    "options": ["--platform=linux/amd64"]
+  },
+  // Public resolvers, so name lookups do not depend on the host's DNS forwarder.
+  "runArgs": ["--platform=linux/amd64", "--dns=1.1.1.1", "--dns=8.8.8.8"],
+
+  "remoteUser": "researcher",
+  // Linux hosts: files written into the mounted tree stay the host account's.
+  "updateRemoteUserUID": true,
+
+  // A volume, so uv's download cache survives a rebuild.
+  "mounts": [
+    {
+      "type": "volume",
+      "source": "shortcut-learning-aas-uv-cache",
+      "target": "/home/researcher/.cache/uv"
+    }
+  ],
+
+  // The dependencies are in the image; this adds the project itself, editable.
+  "postCreateCommand": "uv sync --locked",
+
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-python.python",
+        "ms-python.vscode-pylance",
+        "ms-python.debugpy",
+        "charliermarsh.ruff",
+        "tamasfe.even-better-toml",
+        "redhat.vscode-yaml",
+        "nefrob.vscode-just-syntax"
+      ],
+      "settings": {
+        // Not ./.venv: see the Dockerfile.
+        "python.defaultInterpreterPath": "/home/researcher/.venv/bin/python",
+        "python.terminal.activateEnvironment": false,
+        "python.testing.pytestEnabled": true,
+        "python.testing.pytestArgs": ["tests"],
+        "python.testing.unittestEnabled": false,
+        "[python]": {
+          "editor.defaultFormatter": "charliermarsh.ruff",
+          "editor.formatOnSave": true,
+          "editor.codeActionsOnSave": {
+            "source.organizeImports.ruff": "explicit"
+          }
+        },
+        "ruff.importStrategy": "fromEnvironment",
+        "files.eol": "\n",
+        "terminal.integrated.defaultProfile.linux": "bash",
+        // A run writes thousands of files under outputs/; watching or indexing
+        // them makes the editor unusable while an experiment is in progress.
+        "files.watcherExclude": {
+          "**/outputs/**": true,
+          "**/vendor/**": true,
+          "**/.venv/**": true
+        },
+        "search.exclude": {
+          "**/outputs": true,
+          "**/vendor": true,
+          "**/.venv": true
+        }
+      }
+    }
+  }
+}

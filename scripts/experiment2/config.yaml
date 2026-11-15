@@ -1,0 +1,18 @@
+# Experiment 2 - Which Representation Survives a Monotone Transformation.
+#
+# Read by ./run_experiment2.py. Every scale number is in the Hydra preset.
+
+id: experiment2
+preset: full
+
+# BBOB on both sides of the split.
+problem_classes: [bbob]
+
+# Instances 1-10 are held out, 11-110 fitted on.
+overrides:
+  - paths.run_name=experiment2
+  - preset.max_instances=110
+  # The portfolio is tuned on one instance per function: instance 11, the first of
+  # the training block, so no held-out problem helps choose its own parameters.
+  # Experiment 1 uses the same, so the two regress the same superiorities.
+  - task.tuning_instance_ids=[11]

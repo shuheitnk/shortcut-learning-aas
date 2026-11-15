@@ -1,0 +1,13 @@
+# Appendix - further test blocks of the control family. Read by ./run_appendix_blocks.py.
+# Everything is resolved from the stage store as in Experiments 1, 4 and 5.
+
+id: appendix_blocks
+preset: full
+
+problem_classes: [bbob]
+
+overrides:
+  - paths.run_name=appendix_blocks
+  # Experiments 4 and 5's grid and tuning instance, so their units are the ones read.
+  - preset.max_instances=110
+  - task.tuning_instance_ids=[11]

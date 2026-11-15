@@ -1,0 +1,13 @@
+# The preanalysis - Standardized Shift of Features and Superiorities.
+# Read by ./run_preanalysis.py. It reports how far the transformation moves the
+# superiority regression's inputs, which it reads from the stage store.
+
+id: preanalysis
+preset: full
+
+# BBOB, the suite the regression is fitted and scored on.
+problem_classes: [bbob]
+
+# The instance grid, trials, budget and tuning are the shared stages' defaults.
+overrides:
+  - paths.run_name=preanalysis
