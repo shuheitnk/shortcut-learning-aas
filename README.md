@@ -105,3 +105,18 @@ first experiment that needs it.
 
 About 8 GB of memory is enough; no GPU is used. Long stages checkpoint, so an
 interrupted run resumes where it stopped.
+
+## Citation
+
+```bibtex
+@misc{tanaka2026shortcut,
+  title         = {Shortcut Learning in Feature-Based Algorithm Selection},
+  author        = {Tanaka, Shuhei and Tanaka, Shoichiro and Hatanaka, Toshiharu},
+  year          = {2026},
+  eprint        = {2611.20440},
+  archivePrefix = {arXiv},
+  primaryClass  = {cs.NE},
+  doi           = {10.48550/arXiv.2611.20440},
+  url           = {https://arxiv.org/abs/2611.20440}
+}
+```
