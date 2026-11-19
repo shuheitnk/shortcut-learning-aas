@@ -1,6 +1,7 @@
 # shortcut-learning-aas
 
-Code for the paper "Shortcut Learning in Feature-Based Algorithm Selection".
+Code for the paper "Shortcut Learning in Feature-Based Algorithm Selection"
+([arXiv:2611.20440](https://arxiv.org/abs/2611.20440)).
 
 Experiment code for a study of shortcut learning in landscape-aware algorithm
 selection: whether a selector trained on exploratory landscape analysis (ELA)
